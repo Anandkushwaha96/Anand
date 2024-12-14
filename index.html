@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unified Manager & Employee Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e1e2f, #2b2b4a);
+            color: #fff;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #2b2b4a;
+            height: 100vh;
+            position: fixed;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .sidebar h1 {
+            font-size: 1.5em;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #fff;
+            padding: 10px 15px;
+            display: block;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar ul li a:hover {
+            background: #4CAF50;
+            transform: scale(1.05);
+        }
+
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #4CAF50;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .header img {
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .header h2 {
+            margin: 0;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .home-section {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .home-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .home-section p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: #2b2b4a;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card h3 {
+            margin: 0 0 10px;
+            font-size: 1.3em;
+        }
+
+        canvas {
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        #employeeSection, #managerSection, #employeeNamesSection, #aboutSectionContent {
+            display: none;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <h1>Dashboard Menu</h1>
+        <ul>
+            <li><a href="#" id="homeDashboard">Home</a></li>
+            <li><a href="#" id="employeeDashboard">Employee Dashboard</a></li>
+            <li><a href="#" id="managerDashboard">Manager Dashboard</a></li>
+            <li><a href="#" id="showEmployees">Employee Names</a></li>
+            <li><a href="#" id="aboutSection">About</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <!-- Home Section -->
+        <div id="homeSection" class="home-section">
+            <h2>Welcome to the Gram Trang Technologies</h2>
+            <p>A Techno-Innovation & Entrepreneurship Outreach of Centurion University .</p>
+            <div class="cards">
+                <div class="card">
+                    <h3>Employees</h3>
+                    <p>Total: 300</p>
+                </div>
+                <div class="card">
+                    <h3>Total Machine </h3>
+                    <p>Active: 200+</p>
+                </div>
+                <div class="card">
+                    <h3>column of Machine</h3>
+                    <p>Total:11</p>
+                </div>
+            </div>
+        </div>
+        <!-- Employee Dashboard -->
+        <div id="employeeSection" class="section" style="display:none;">
+            <div class="header">
+                <h2>Employee Dashboard</h2>
+                <img src="CK.png" alt="Company Logo">
+            </div>
+
+            <div class="cards">
+                <div class="card">
+                    <h3>Female Employees</h3>
+                    <p>Total: 120</p>
+                </div>
+                <div class="card">
+                    <h3>Male Employees</h3>
+                    <p>Total: 180</p>
+                </div>
+                <div class="card">
+                    <h3>Total Employees</h3>
+                    <p>Total: 300</p>
+                </div>
+            </div>
+
+            <canvas id="employeeChart"></canvas>
+        </div>
+
+        <!-- Manager Dashboard -->
+        <div id="managerSection" class="section" style="display:none;">
+            <div class="header">
+                <h2>Manager Dashboard</h2>
+                <span class="manager-name"></span>
+            </div>
+
+            <div class="cards">
+                <div class="card">
+                    <h3>Store Section</h3>
+                    <p>Progress: 60%</p>
+                    <div class="progress-bar">
+                        <div style="width: 60%; background: #4CAF50;">60%</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Cutting Section</h3>
+                    <p>Progress: 70%</p>
+                    <div class="progress-bar">
+                        <div style="width: 70%; background: #4CAF50;">70%</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Production Section</h3>
+                    <p>Progress: 50%</p>
+                    <div class="progress-bar">
+                        <div style="width: 50%; background: #FFEB3B;">50%</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Quality Section</h3>
+                    <p>Progress: 40%</p>
+                    <div class="progress-bar">
+                        <div style="width: 40%; background: #FF9800;">40%</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Finishing Section</h3>
+                    <p>Progress: 90%</p>
+                    <div class="progress-bar">
+                        <div style="width: 90%; background: #4CAF50;">90%</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Dispatch Section</h3>
+                    <p>Progress: 80%</p>
+                    <div class="progress-bar">
+                        <div style="width: 80%; background: #4CAF50;">80%</div>
+                    </div>
+                </div>
+            </div>
+
+            <canvas id="managerChart"></canvas>
+        </div>
+
+        <!-- Employee Names -->
+        <div id="employeeNamesSection" style="display:none;">
+            <h2>Employee Names</h2>
+            <ul class="employee-list" id="employeeList"></ul>
+        </div>
+
+        <!-- About Section -->
+        <div id="aboutSectionContent" class="about-section" style="display:none;">
+             <h2>About</h2> 
+    <p>Organization:Gram Trang Apparel Cluster, Vizianagaram ,Andhrapradesh</p>
+    <p>Dashboard Purpose:This unified dashboard is designed to streamline management and employee activities, providing an efficient overview of various sections such as Store, Cutting, Production, Quality, Finishing, and Dispatch.</p>
+    <p>Designed and Developed By:Anand Kushwaha</p>
+    <p>Contact Information:
+        <br>Email:learncoding691@gmail.com 
+        <br>GitHub:<a href="https://github.com/Anandkushwaha96" target="_blank">Anandkushwaha96</a>
+        <br>Instagram:<a href="https://instagram.com/_.anand_xd" target="_blank">_.anand_xd</a>
+    </p>
+</div>
+        </div>
+    </div>
+
+    <script>
+        // List of employee names
+        const employeeNames = [
+            "Aarav Sharma", "Ananya Gupta", "Rohan Patel", "Meera Iyer", "Karan Deshmukh", "Priya Nair", "Aman Joshi",
+            "Kavya Reddy", "Rahul Choudhary", "Sneha Dutta", "Siddharth Malhotra", "Riya Kapoor", "Arjun Singh",
+            "Ishita Jain", "Vedant Mehta", "Pooja Roy", "Aditya Verma", "Neha Bansal", "Manish Sinha", "Tanya Mishra",
+            "Vishal Tiwari", "Ankita Sengupta", "Akash Kulkarni", "Shruti Aggarwal", "Dev Sharma", "Aditi Rao",
+            "Harsh Gupta", "Nidhi Yadav", "Vikram Reddy", "Pallavi Desai", "Yash Chauhan", "Simran Khurana",
+            "Omprakash Rawat", "Sanjana Shetty", "Vikas Kumar", "Rachana Pillai", "Sameer Saxena", "Deepa Sharma",
+            "Abhay Pandey", "Swati Ghosh", "Parth Bhatia", "Ishani Rajput", "Rohit Kaushik", "Kriti Venkatesh",
+            "Tarun Sood", "Nisha Bhargava", "Mohit Trivedi", "Gayatri Raman", "Anil Dubey", "Bhavya Kaur",
+            "Rajat Thakur", "Sonali Das", "Deepak Ranjan", "Juhi Chatterjee", "Gaurav Bhardwaj", "Aishwarya Rao",
+            "Prateek Agarwal", "Ruchi Dubey", "Abhishek Nair", "Kritika Saxena", "Hemant Joshi", "Prachi Malhotra",
+            "Arnav Reddy", "Anushka Jain", "Kunal Singh", "Radhika Iyer", "Shantanu Tiwari", "Poonam Sharma",
+            "Sameer Chopra", "Tamanna Bhatia", "Nitin Verma", "Bhavna Desai", "Tejas Kulkarni", "Snehal Yadav",
+            "Vikram Rao", "Anjali Mehta", "Rahul Shukla", "Smita Choudhary", "Saurabh Patil", "Anamika Roy",
+            "Ashwin Shetty", "Nikita Bansal", "Devansh Pandey", "Ira Ghosh", "Mahesh Nambiar", "Charu Kapoor",
+            "Pranay Reddy", "Kavita Pillai", "Prashant Sinha", "Vaishnavi Gupta", "Chirag Chawla", "Meenakshi Iyer",
+            "Ujjwal Jain", "Ritika Singh", "Rajesh Khanna", "Divya Nair", "Aakash Deshmukh", "Garima Dutta",
+            "Nikhil Saxena", "Varsha Patil", "Praveen Kumar", "Kushal Mehta", "Sonam Roy", "Himanshi Khurana"
+        ];
+
+        // Render employee names
+        const employeeList = document.getElementById("employeeList");
+        employeeNames.forEach(function(name) {
+            const li = document.createElement("li");
+            li.textContent = name;
+            employeeList.appendChild(li);
+        });
+
+        // Switch between employee and manager dashboards
+        document.getElementById("employeeDashboard").addEventListener("click", function() {
+            document.getElementById("employeeSection").style.display = "block";
+            document.getElementById("managerSection").style.display = "none";
+            document.getElementById("employeeNamesSection").style.display = "none";
+            document.getElementById("aboutSectionContent").style.display = "none";
+            renderEmployeeChart();
+        });
+
+        document.getElementById("managerDashboard").addEventListener("click", function() {
+            document.getElementById("employeeSection").style.display = "none";
+            document.getElementById("managerSection").style.display = "block";
+            document.getElementById("employeeNamesSection").style.display = "none";
+            document.getElementById("aboutSectionContent").style.display = "none";
+            renderManagerChart();
+        });
+
+        document.getElementById("showEmployees").addEventListener("click", function() {
+            document.getElementById("employeeSection").style.display = "none";
+            document.getElementById("managerSection").style.display = "none";
+            document.getElementById("employeeNamesSection").style.display = "block";
+            document.getElementById("aboutSectionContent").style.display = "none";
+        });
+
+        document.getElementById("aboutSection").addEventListener("click", function() {
+            document.getElementById("employeeSection").style.display = "none";
+            document.getElementById("managerSection").style.display = "none";
+            document.getElementById("employeeNamesSection").style.display = "none";
+            document.getElementById("aboutSectionContent").style.display = "block";
+        });
+
+        // Function to render employee chart
+        function renderEmployeeChart() {
+            const ctx = document.getElementById('employeeChart').getContext('2d');
+            const employeeChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Female', 'Male'],
+                    datasets: [{
+                        label: 'Employees',
+                        data: [120, 180],
+                        backgroundColor: ['#ff6384', '#36a2eb']
+                    }]
+                }
+            });
+        }
+
+        // Function to render manager chart (Candlestick/Bar with dynamic colors)
+        function renderManagerChart() {
+            const ctx = document.getElementById('managerChart').getContext('2d');
+            const managerChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Store', 'Cutting', 'Production', 'Quality', 'Finishing', 'Dispatch'],
+                    datasets: [{
+                        label: 'Progress',
+                        data: [60, 70, 50, 40, 90, 80],
+                        fill: false,
+                        borderColor: '#4CAF50',
+                        tension: 0.1
+                    }]
+                }
+            });
+        }
+    </script>
+</body>
+</html>
